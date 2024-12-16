@@ -5,12 +5,10 @@
   </template>
   
   <script>
-  import ApexCharts from 'vue3-apexcharts';
+
   
   export default {
-    components: {
-      apexchart: ApexCharts,
-    },
+
     props: {
       currentTheme: {
         type: String,

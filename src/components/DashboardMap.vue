@@ -5,12 +5,7 @@
 </template>
 
 <script>
-import ApexCharts from 'vue3-apexcharts';
-
 export default {
-  components: {
-    apexchart: ApexCharts,
-  },
   data() {
     return {
       series: [

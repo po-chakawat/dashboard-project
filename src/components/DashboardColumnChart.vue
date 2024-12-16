@@ -5,12 +5,9 @@
 </template>
 
 <script>
-import ApexCharts from 'vue3-apexcharts';
-
 export default {
-  components: {
-    apexchart: ApexCharts,
-  },
+
+  
   props: {
     currentTheme: {
       type: String,
@@ -38,6 +35,7 @@ export default {
     },
   },
   methods: {
+
     getChartOptions(theme) {
       const isDark = theme === 'dark';
       return {
