@@ -1,2 +1,3 @@
-# dashboard-project
-It's a project created to challenge yourself, made with vue.js.
+# CHALLENGE - Dashboard Live Preview
+
+https://po-chakawat.github.io/dashboard-project/
