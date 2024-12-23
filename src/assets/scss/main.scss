@@ -382,3 +382,16 @@ button {
         width: 100%;
     }
 }
+
+.crypto-card{
+    .crypto-coin{
+        display: flex;
+            align-items: center;
+            gap: 0.5rem;
+    }
+    .crypto-name{
+        display: flex
+        ;
+            align-items: center;
+    }
+}
