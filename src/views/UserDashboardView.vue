@@ -1,68 +1,74 @@
 <template>
-    <div id="wrapper">
-        <TopHeader :isDarkMode="isDarkMode" @toggle-menu="toggleMenu" @toggle-dark-mode="toggleDarkMode"
-            @search="handleSearch" />
+  <div id="wrapper">
+    <TopHeader :isDarkMode="isDarkMode" @toggle-menu="toggleMenu" @toggle-dark-mode="toggleDarkMode"
+      @search="handleSearch" />
 
-        <!-- Main Layout -->
-        <div class="d-flex">
-            <!-- Sidebar -->
-            <NavMenu ref="navmenu" />
+    <!-- Main Layout -->
+    <div class="d-flex">
+      <!-- Sidebar -->
+      <NavMenu ref="navmenu" />
 
-            <!-- Content -->
-            <div class="app-content"
-                :class="{ 'expanded-app-content': !isSidebarOpen, 'collapsed-content': isSidebarOpen }">
-                <div class="row">
-                    <!-- Crypto Cards -->
-                    <div class="col-xl-12">
-                        <h2>Cryptocurrency Dashboard</h2>
-                        <div v-if="loading" class="loading">Loading...</div>
-                        <div v-else class="crypto-list">
-                            <!-- ใช้ v-for และ key เพื่อให้ Vue ควบคุมการ re-render ของแต่ละ card -->
-                            <CryptoCard 
-                            v-for="coin in coins" 
-                            :key="coin.id" 
-                            :coin="coin" 
-                            v-bind="coin"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Server Stats -->
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex fw-bold small">
-                                    <span class="flex-grow-1">SERVER STATS</span>
-                                </div>
-                                <div class="ratio ratio-21x9 mb-3 chart-container">
-                                    <DashboardColumnChart :currentTheme="currentTheme" />
-                                </div>
-                                <div class="row">
-                                    <!-- Disk Usage -->
-                                    <div class="col-lg-6">
-                                        <UsageStats title="DISK USAGE" usage="20.04 / 256 GB" percent="20"
-                                            details="Last updated 1 min ago"
-                                            stats="[{name: 'DISK C', value: '19.56GB'}, {name: 'DISK D', value: '0.50GB'}]" />
-                                    </div>
-                                    <!-- Bandwidth -->
-                                    <div class="col-lg-6">
-                                        <UsageStats title="BANDWIDTH" usage="83.76GB / 10TB" percent="20"
-                                            details="Last updated 1 min ago"
-                                            stats="[{name: 'HTTP', value: '19.56GB'}, {name: 'FTP', value: '0.50GB'}]" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Map Section -->
-                    <div class="col-xl-6">
-                        <DashboardMap />
-                    </div>
-                </div>
+      <!-- Content -->
+      <div class="app-content" :class="{ 'expanded-app-content': !isSidebarOpen, 'collapsed-content': isSidebarOpen }">
+        <div class="row">
+          <div class="col-xl-12 mb-3">
+            <CryptoPricesHighlight />
+          </div>
+          <!-- Crypto Cards -->
+          <div class="col-xl-12">
+            <div class="crypto-prices rounded-3">
+              <h5>Crytocurrency Prices</h5>
+              <div v-if="loading" class="loading">Loading...</div>
+              <table v-else class="crypto-prices__table">
+                <thead>
+                  <th></th>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>24h %</th>
+                  <th>Market Cap</th>
+                  <th>Graph 24 hrs.</th>
+                  <th></th>
+                </thead>
+                <CryptoPricesTable v-for="coin in coins" :key="coin.id" :coin="coin" v-bind="coin" />
+              </table>
             </div>
+          </div>
+
+          <!-- Server Stats -->
+          <div class="col-xl-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex fw-bold small">
+                  <span class="flex-grow-1">SERVER STATS</span>
+                </div>
+                <div class="ratio ratio-21x9 mb-3 chart-container">
+                  <DashboardColumnChart :currentTheme="currentTheme" />
+                </div>
+                <div class="row">
+                  <!-- Disk Usage -->
+                  <div class="col-lg-6">
+                    <UsageStats title="DISK USAGE" usage="20.04 / 256 GB" percent="20" details="Last updated 1 min ago"
+                      stats="[{name: 'DISK C', value: '19.56GB'}, {name: 'DISK D', value: '0.50GB'}]" />
+                  </div>
+                  <!-- Bandwidth -->
+                  <div class="col-lg-6">
+                    <UsageStats title="BANDWIDTH" usage="83.76GB / 10TB" percent="20" details="Last updated 1 min ago"
+                      stats="[{name: 'HTTP', value: '19.56GB'}, {name: 'FTP', value: '0.50GB'}]" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Section -->
+          <div class="col-xl-6">
+            <DashboardMap />
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -71,7 +77,8 @@ import NavMenu from "@/components/NavMenu.vue";
 import DashboardColumnChart from "@/components/DashboardColumnChart.vue";
 import DashboardMap from "@/components/DashboardMap.vue";
 import { getCryptocurrencyData } from '@/services/cryptoService';
-import CryptoCard from "@/components/CryptoCard.vue";
+import CryptoPricesTable from "@/components/CryptoPricesTable.vue";
+import CryptoPricesHighlight from "@/components/CryptoPricesHighlight.vue";
 
 export default {
   components: {
@@ -79,7 +86,8 @@ export default {
     NavMenu,
     DashboardColumnChart,
     DashboardMap,
-    CryptoCard,
+    CryptoPricesTable,
+    CryptoPricesHighlight,
   },
   data() {
     return {
@@ -99,7 +107,7 @@ export default {
     // เรียกข้อมูลทันทีที่ component ถูกสร้าง
     await this.fetchData();
   },
-   mounted() {
+  mounted() {
     // โหลด dark mode setting
     const savedMode = localStorage.getItem("darkMode");
     if (savedMode) {
@@ -115,7 +123,7 @@ export default {
   methods: {
     // ดึงข้อมูล cryptocurrency
     async fetchData() {
-        try {
+      try {
         const newCoins = await getCryptocurrencyData();
 
         // เปรียบเทียบข้อมูลก่อนอัปเดต
@@ -150,28 +158,28 @@ export default {
 </script>
 <style scoped>
 .crypto-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
 }
 
 .expanded-app-content {
-    width: calc(100% - 250px);
-    /* Adjust based on sidebar width */
+  width: calc(100% - 250px);
+  /* Adjust based on sidebar width */
 }
 
 .collapsed-content {
-    width: 100%;
+  width: 100%;
 }
 
 .chart-container {
-    position: relative;
+  position: relative;
 }
 
 .color-theme {
-    color: var(--bs-theme-color, #007bff);
-    /* Default theme color */
+  color: var(--bs-theme-color, #007bff);
+  /* Default theme color */
 }
 </style>

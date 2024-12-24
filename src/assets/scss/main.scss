@@ -1,18 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import '../css/style.css';
+
 :root {
     --bs-body-bg-image: url(../images/pattern.png);
     --bs-body-font-family: "Chakra Petch", sans-serif;
-
-    --bs-theme: #249d79 ;
+    --bs-theme: #00994d;
     --bs-inverse-rgb: 0, 0, 0;
     --bs-body-letter-spacing: 0.046875rem;
     --bs-body-color: rgba(0, 0, 0, 0.75);
-    --bg-primary: #ecebef;
+    --bg-primary: rgba(236, 235, 239, 0.2);
     --bg-header: #ffffff;
     --text-primary: #000000;
     --text-link-opcity: rgb(0 0 0 / 50%);
-    .progress{
+    --border-line:rgba(0, 0, 0, 0.1);
+    --color-status-success:#00994d;  
+    --color-status-danger:#f04542;
+    --bg-card-element:#ffffff;
+    --global-shadow-1:rgba(88, 102, 126, .08);
+    --global-shadow-2:rgba(88, 102, 126, .12);
+    .progress {
 
         --bs-progress-bar-bg: #31a280;
     }
@@ -20,28 +26,90 @@
 
 [data-bs-theme=dark] {
     --bs-body-bg-image: url(../images/pattern-dark.png);
-    --bs-theme: #3cd2a5 ;
+    --bs-theme: #3cd2a5;
     --bs-inverse-rgb: 255, 255, 255;
     --bg-primary: #1d2835;
     --bg-header: rgba(29, 40, 53, 0.95);
     --text-primary: #ffffff;
     --text-link-opcity: rgb(255 255 255 / 50%);
-    .progress{
+    --border-line:rgba(189, 189, 189, 0.2);
+    --color-status-success:#0c6;
+    --color-status-danger:#f25c5a;
+    --bg-card-element:#171f2a;
+    --global-shadow-1:rgba(88, 102, 126, 0);
+    --global-shadow-2:rgba(88, 102, 126, 0);
+
+    .progress {
         --bs-progress-bar-bg: #3aca9f;
     }
 }
 
-a {
-    text-decoration: none;
-    color: var(--text-primary);
+/* Reset styles */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body { 
+html {
+    font-size: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+
+    p {
+        font-size: 0.875rem;
+    }
+}
+
+img,
+picture,
+video,
+canvas {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+
+body {
     background: 0 0;
     font-family: var(--bs-body-font-family);
     font-weight: var(--bs-body-font-weight);
     letter-spacing: var(--bs-body-letter-spacing);
     background-color: var(--bg-primary);
+    color: var(--text-primary);
     position: relative;
     min-height: 100vh;
     z-index: 9999;
@@ -62,6 +130,7 @@ body {
         z-index: -5;
     }
 }
+
 .btn {
     padding: .5rem 1rem;
 }
@@ -79,17 +148,20 @@ button {
     border: none;
 }
 
-.card{
+.card {
     --bs-border-color-rgb: var(--bs-body-color-rgb);
     position: relative;
     background: transparent;
     border: none;
-    &::before , &::after {
-     content: '';
-     position: absolute;
-     z-index: -1;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
     }
-    &::before{
+
+    &::before {
         left: 15px;
         right: 15px;
         top: 0;
@@ -97,7 +169,8 @@ button {
         border-top: 1px solid rgba(var(--bs-border-color-rgb), .3);
         border-bottom: 1px solid rgba(var(--bs-border-color-rgb), .3);
     }
-    &::after{
+
+    &::after {
         top: 15px;
         bottom: 15px;
         left: 0;
@@ -108,17 +181,18 @@ button {
 }
 
 .chart-container {
-    height: 100%; 
-  }
-  
+    height: 100%;
+}
+
 
 .apexcharts-canvas .apexcharts-legend-series {
     display: flex;
     align-items: center;
-  }
-  .apexcharts-canvas .apexcharts-legend-marker {
-    margin-right: 0.5rem; 
-  }
+}
+
+.apexcharts-canvas .apexcharts-legend-marker {
+    margin-right: 0.5rem;
+}
 
 #app {
     padding-top: 3.25rem;
@@ -279,16 +353,21 @@ button {
                 min-width: 150px;
                 border-radius: 0;
             }
+
             .dropdown-item {
                 font-size: 12px;
-                i{
+
+                i {
                     font-size: 16px;
                     color: var(--bs-theme);
                 }
-                &.active, &:active{
+
+                &.active,
+                &:active {
                     background-color: var(--bs-theme);
                 }
             }
+
             &.show .dropdown-menu {
                 display: block;
                 animation: appDropdownShow .25s both cubic-bezier(.7, 0, .3, 1)
@@ -383,15 +462,77 @@ button {
     }
 }
 
-.crypto-card{
-    .crypto-coin{
-        display: flex;
+.crypto-prices{
+    padding: 1rem 1.25rem;
+    background: var(--bg-card-element);
+    box-shadow: 0 4px 24px 0 var(--global-shadow-1), 0 1px 2px 0 var(--global-shadow-2);
+    &__table {
+        width: 100%;
+        th,td{
+            padding: 0.5rem;
+            &:nth-of-type(7) ,  &:nth-of-type(8){
+                text-align: center;
+            }
+        }
+        td{
+            border-bottom: 1px solid var(--border-line);
+        }
+        thead{
+            th{
+                font-weight: 200;
+            }
+        }
+        .coin {
+            display: flex;
             align-items: center;
             gap: 0.5rem;
-    }
-    .crypto-name{
-        display: flex
-        ;
-            align-items: center;
+    
+            &__image {
+                width: 1.75rem;
+                height: 1.75rem;
+            }
+    
+            &__name {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+    
+                &-name {
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+    
+                &-symbol {
+                    text-transform: uppercase;
+                    opacity: 0.7;
+                }
+            }
+        }
+    
+        .sparkline {
+            width: 100%;
+            height: 50px;
+        }
+    
+        .status-success {
+            color: var(--color-status-success);
+        }
+    
+        .status-danger {
+            color: var(--color-status-danger);
+        }
+    
+        .btn-trade{
+            color: var(--color-status-success);
+            border: 1px solid var(--color-status-success);
+            border-radius: 4px;
+            padding: 4px 1rem;
+            background: transparent;
+            transition: all 0.2s ease-in-out;
+            &:hover{
+                background: linear-gradient(110.75deg, #33ab71 10.06%, #06753f 84.9%);
+                color: #ffffff;
+            }
+        }
     }
 }
