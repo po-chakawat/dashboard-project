@@ -107,7 +107,7 @@ export default {
     }
     this.applyTheme();
 
-    this.intervalId = setInterval(this.fetchData, 60000); // Fetch data ทุก 10 วินาที
+    this.intervalId = setInterval(this.fetchData, 60000);
   },
   beforeUnmount() {
     clearInterval(this.intervalId);
